@@ -35,6 +35,26 @@ questions = Question.create([
     {
         title: "What is a class in Ruby?",
         tag: "Ruby"
+    },
+    {
+        title: "What is JSX in React?",
+        tag: "React"
+    },
+    {
+        title: "What is the difference between props and state in React?",
+        tag: "React"
+    },
+    {
+        title: "How do you loop through an array in Python?",
+        tag: "Python"
+    },
+    {
+        title: "What is a lambda function in Python?",
+        tag: "Python"
+    },
+    {
+        title: "What is a decorator in Python?",
+        tag: "Python"
     }
 ])
 puts "Created #{questions.count} questions"
