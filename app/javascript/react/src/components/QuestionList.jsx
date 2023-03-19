@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import QuestionDetails from './QuestionDetails';
 
 
 function QuestionList() {
@@ -45,12 +46,8 @@ function QuestionList() {
         <div className='row'>
             <div className='col-lg-10 mx-auto'>
                 {questionsList.map((question) =>
-                    <div className='card rounded-10 mt-3' key={question.id}>
-                        <div className='card-body'>
-                            <h3 className='card-title'>{question.title}</h3>
-                            <p className="lead"><span className='badge bg-danger'>{question.tag}</span></p>
-                        </div>
-                    </div>
+                    <QuestionDetails question={question} key={question.id} />
+
                 )}
             </div>
         </div>
