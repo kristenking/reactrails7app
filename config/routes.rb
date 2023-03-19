@@ -3,8 +3,12 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :questions, only: [:index]
+      resources :questions, only: [:index] do
+        member do
+          put :update_counter
+        end
+      end
     end
   end
-  
+
 end
