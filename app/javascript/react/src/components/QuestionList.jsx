@@ -53,7 +53,7 @@ function QuestionList() {
         <div className='row'>
             <div className='col-lg-10 mx-auto'>
                 <p className='lead fw-bold'>Filter Questions by Tag</p>
-                <select className='form-select form-select-lg' value={selectedTag} onChange={event => updateSelectedItem(event)}>
+                <select className='form-select form-select-lg rounded-10' value={selectedTag} onChange={event => updateSelectedItem(event)}>
                     {questionsTags.map(tag => (<option key={tag.value} value={tag.value} >{tag.label}</option>))}
                 </select>
                 {questionsList.length > 0 ?
