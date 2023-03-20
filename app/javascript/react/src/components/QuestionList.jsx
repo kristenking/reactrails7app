@@ -61,8 +61,9 @@ function QuestionList() {
 
     return (
         <div className='row'>
-            <div className='col-lg-10 mx-auto'>
-                <p className='lead fw-bold'>Filter Questions by Tag</p>
+            <div className='col-lg-10'>
+            <img src="/images/poster.jpg" alt='poster' style={{maxWidth: '100%', borderRadius:"10px"}}/>
+                <p className='lead fw-bold mt-3' style={{color:"#ed6901", fontSize:"25px"}}>Filter Questions by Tag</p>
                 <select className='form-select form-select-lg rounded-10' value={selectedTag} onChange={event => updateSelectedItem(event)}>
                     {questionsTags.map(tag => (<option key={tag.value} value={tag.value} >{tag.label}</option>))}
                 </select>

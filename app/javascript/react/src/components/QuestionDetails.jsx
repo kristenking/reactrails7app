@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 
 
 
+
 function QuestionDetails(props) {
 
   const [likeCount, setLikeCount] = useState(props.question.likes_count);
@@ -44,14 +45,14 @@ function QuestionDetails(props) {
         <p className="lead">
           <span className='badge bg-danger'>{props.question.tag}</span>
         </p>
-        <button type="button" className="btn btn-primary position-relative" onClick={handleLikeClick} style={{ marginRight: 1 + "em" }}>
+        <button type="button" className="btn btn-warning fw-bold position-relative" onClick={handleLikeClick} style={{ marginRight: 1 + "em" }}>
           Like
           {
             likeCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {likeCount}
             </span>
           }
         </button>
-        <button type="button" className="btn btn-primary position-relative" onClick={handleDislikeClick}>
+        <button type="button" className="btn btn-warning fw-bold position-relative" onClick={handleDislikeClick}>
           Dislike
           {
             dislikeCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {dislikeCount}
