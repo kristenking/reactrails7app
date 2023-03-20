@@ -2,10 +2,22 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import QuestionDetails from './QuestionDetails';
+import EmptyQuestionAlert from './EmptyQuestionAlert';
 
 
 function QuestionList() {
+
+    const questionsTags = [
+        { label: 'All', value: 0 },
+        { label: 'Ruby', value: 1 },
+        { label: 'JavaScript', value: 2 },
+        { label: 'Python', value: 3 },
+        { label: 'React', value: 4 }
+    ]
     const [questionsList, setQuestionsList] = useState([]);
+    const [selectedTag, setSelectedTag] = useState(questionsTags[0].value);
+
+
     const questionUrl = 'http://localhost:3000/api/v1/questions';
 
     const fetchQuestionList = () => {
@@ -18,55 +30,36 @@ function QuestionList() {
             )
     }
 
+
+
     useEffect(() => {
         fetchQuestionList()
     }, [])
 
-    // questionsList = [
-    //     {
-    //         id: 1,
-    //         title: "What is Ruby's method for creating arrays?",
-    //         tag: "Ruby"
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "How do you define a method in Ruby?",
-    //         tag: "Ruby"
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "What is a block in Ruby?",
-    //         tag: "Ruby"
-    //     },
-    //     {
-    //         id: 4,
-    //         title: "How do you install a gem in Ruby?",
-    //         tag: "Ruby"
-    //     },
-    //     {
-    //         id: 5,
-    //         title: "What is the difference between 'puts' and 'print' in Ruby?",
-    //         tag: "Ruby"
-    //     },
-    //     {
-    //         id: 6,
-    //         title: "How do you handle errors in Ruby?",
-    //         tag: "Ruby"
-    //     },
-    //     {
-    //         id: 7,
-    //         title: "What is a class in Ruby?",
-    //         tag: "Ruby"
-    //     }
-    // ]
+
+    const updateSelectedItem = (event) => {
+        setQuestionsList([])
+        setSelectedTag(event.target.value)
+        fetch(questionUrl + `?tags=${questionsTags[event.target.value].label}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                setQuestionsList(data)
+            }
+            )
+    }
 
     return (
         <div className='row'>
             <div className='col-lg-10 mx-auto'>
-                {questionsList.map((question) =>
-                    <QuestionDetails question={question} key={question.id} />
-
-                )}
+                <p className='lead fw-bold'>Filter Questions by Tag</p>
+                <select className='form-select form-select-lg' value={selectedTag} onChange={event => updateSelectedItem(event)}>
+                    {questionsTags.map(tag => (<option key={tag.value} value={tag.value} >{tag.label}</option>))}
+                </select>
+                {questionsList.length > 0 ?
+                    questionsList.map((question) =>
+                        <QuestionDetails question={question} key={question.id} />
+                    ) : <EmptyQuestionAlert tagname={questionsTags[selectedTag].label} />}
             </div>
         </div>
     )
