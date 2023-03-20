@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import QuestionDetails from './QuestionDetails';
 import EmptyQuestionAlert from './EmptyQuestionAlert';
+import NewQuestion from './NewQuestion';
 
 
 function QuestionList() {
@@ -62,8 +63,11 @@ function QuestionList() {
     return (
         <div className='row'>
             <div className='col-lg-10'>
-            <img src="/images/poster.jpg" alt='poster' style={{maxWidth: '100%', borderRadius:"10px"}}/>
-                <p className='lead fw-bold mt-3' style={{color:"#ed6901", fontSize:"25px"}}>Filter Questions by Tag</p>
+                <img src="/images/poster.jpg" alt='poster' style={{ maxWidth: '100%', borderRadius: "10px" }} />
+                <p className='lead fw-bold mt-3' style={{ color: "#ed6901", fontSize: "25px" }}>Filter Questions by Tag</p>
+                <button type="button" className="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Share your Question
+</button>
                 <select className='form-select form-select-lg rounded-10' value={selectedTag} onChange={event => updateSelectedItem(event)}>
                     {questionsTags.map(tag => (<option key={tag.value} value={tag.value} >{tag.label}</option>))}
                 </select>
@@ -72,7 +76,9 @@ function QuestionList() {
                         <QuestionDetails question={question} key={question.id} />
                     ) : ''}
                 {isShowAlert && <EmptyQuestionAlert tagname={questionsTags[selectedTag].label} />}
+                
             </div>
+    <NewQuestion />
         </div>
     )
 }
