@@ -34,10 +34,28 @@ function NewQuestion() {
     const handleQuestionSubmit = (event) => {
         event.preventDefault()
         console.log(formFields)
+        createQuestion(formFields)
     }
 
-    handleFormFields = (event) => {
+    const handleFormFields = (event) => {
         setFormFields({ ...formFields, [event.target.name]: event.target.value })
+    }
+
+    const createQuestion = (data) => {
+        fetch('/api/v1/questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data)
+            })
+            .catch((error) => {
+                console.error('Error:', error)
+            })
     }
     return (
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
