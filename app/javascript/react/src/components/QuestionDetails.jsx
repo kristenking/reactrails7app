@@ -9,9 +9,6 @@ function QuestionDetails(props) {
 
   const [likeCount, setLikeCount] = useState(props.question.likes_count);
   const [dislikeCount, setDislikeCount] = useState(props.question.dislikes_count);
-  const [likeClicked, setLikeClicked] = useState(false);
-  const [dislikeClicked, setDislikeClicked] = useState(false);
-
 
   const updateQuestionCounter = (data) => {
     fetch(`http://localhost:3000/api/v1/questions/${props.question.id}/update_counter`, {
@@ -21,29 +18,23 @@ function QuestionDetails(props) {
       },
       body: JSON.stringify(data)
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
   }
 
   const handleLikeClick = () => {
-    if (!likeClicked) {
-      setLikeCount(likeCount + 1);
-      updateQuestionCounter({ count_for: 'like' });
-      setLikeClicked(true);
-    }
+    setLikeCount(likeCount + 1);
+    updateQuestionCounter({ count_for: 'like'});
   };
 
   const handleDislikeClick = () => {
-    if (!dislikeClicked) {
-      setDislikeCount(dislikeCount + 1);
-      updateQuestionCounter({ count_for: 'dislike' });
-      setDislikeClicked(true);
-    }
+    setDislikeCount(dislikeCount + 1);
+    updateQuestionCounter({ count_for: 'dislike' }); 
   };
 
 
@@ -74,3 +65,4 @@ function QuestionDetails(props) {
 }
 
 export default QuestionDetails
+
