@@ -73,3 +73,5 @@ end
 
 gem 'cssbundling-rails'
 gem "devise", "~> 4.9"
+
+gem "doorkeeper", "~> 5.6"
