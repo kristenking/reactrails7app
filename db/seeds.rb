@@ -6,6 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+
 puts "Creating questions"
 questions = Question.create([
     {
@@ -58,3 +59,9 @@ questions = Question.create([
     }
 ])
 puts "Created #{questions.count} questions"
+
+
+User.first_or_create(email: "kris@example.com",
+    password: "password",
+    password_confirmation: "password",
+    role: User.roles[:admin])
