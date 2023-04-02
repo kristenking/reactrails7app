@@ -9,6 +9,9 @@ function QuestionDetails(props) {
 
   const [likeCount, setLikeCount] = useState(props.question.likes_count);
   const [dislikeCount, setDislikeCount] = useState(props.question.dislikes_count);
+  const [clickedLike, setClickedLike] = useState(false);
+  const [clickedDislike, setClickedDislike] = useState(false);
+
 
   const updateQuestionCounter = (data) => {
     fetch(`http://localhost:3000/api/v1/questions/${props.question.id}/update_counter`, {
@@ -28,14 +31,21 @@ function QuestionDetails(props) {
   }
 
   const handleLikeClick = () => {
-    setLikeCount(likeCount + 1);
-    updateQuestionCounter({ count_for: 'like'});
+    if (!clickedLike) {
+      setLikeCount(likeCount + 1);
+      updateQuestionCounter({ count_for: 'like'});
+      setClickedLike(true);
+    }
   };
 
   const handleDislikeClick = () => {
-    setDislikeCount(dislikeCount + 1);
-    updateQuestionCounter({ count_for: 'dislike' }); 
+    if (!clickedDislike) {
+      setDislikeCount(dislikeCount + 1);
+      updateQuestionCounter({ count_for: 'dislike' }); 
+      setClickedDislike(true);
+    }
   };
+
 
 
   return (
