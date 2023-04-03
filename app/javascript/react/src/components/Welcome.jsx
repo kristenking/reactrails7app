@@ -1,12 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
+import Login from './sessions/Login';
+import Signup from './sessions/Signup';
+import Logout from './sessions/Logout';
 import QuestionList from './QuestionList';
+
 
 
 function Welcome() {
     return (
         <div className='container mt-5'>
             <h1 style={{color:"#FEBF01"}}>Welcome to React Rails 7 App</h1>
+            <Login />
+            <Signup />
+            <Logout />
             <QuestionList />
         </div>
 
