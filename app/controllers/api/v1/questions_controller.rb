@@ -1,13 +1,18 @@
 class Api::V1::QuestionsController < ApplicationController 
     protect_from_forgery with: :null_session
+
     def index
+        page = (params[:page] || 1).to_i
+        per_page = (params[:per_page] || 5).to_i
+        offset = (page - 1) * per_page
+    
         if params[:tags].present? && params[:tags] != 'All'
-            @questions = Question.where(tag: params[:tags])
+          @questions = Question.where(tag: params[:tags]).limit(per_page).offset(offset)
         else
-            @questions = Question.all
+          @questions = Question.limit(per_page).offset(offset)
         end
         render json: @questions, status: :ok
-    end
+      end
 
     def update_counter
         @question = Question.find(params[:id])

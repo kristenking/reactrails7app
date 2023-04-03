@@ -20,15 +20,18 @@ function QuestionList() {
     const [selectedTag, setSelectedTag] = useState(questionsTags[0].value);
     const [isShowAlert, setIsShowAlert] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+
 
     const questionUrl = 'http://localhost:3000/api/v1/questions';
 
-    const fetchQuestionList = () => {
-        fetch(questionUrl)
+    const fetchQuestionList = (page=1) => {
+        fetch(`${questionUrl}?page=${page}&tags=${questionsTags[selectedTag].label}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
-                setQuestionsList(data)
+                const sortedQuestions = data.sort((a, b) => b.likes_count - a.likes_count)
+                setQuestionsList(sortedQuestions)
                 if (data.length == 0) {
                     setIsShowAlert(true)
                 } else {
@@ -48,11 +51,12 @@ function QuestionList() {
     const updateSelectedItem = (event) => {
         setQuestionsList([])
         setSelectedTag(event.target.value)
-        fetch(questionUrl + `?tags=${questionsTags[event.target.value].label}`)
+        fetch(`${questionUrl}?page=${currentPage}&tags=${questionsTags[event.target.value].label}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
-                setQuestionsList(data)
+                const sortedQuestions = data.sort((a, b) => b.likes_count - a.likes_count);
+                setQuestionsList(sortedQuestions);
                 if (data.length == 0) {
                     setIsShowAlert(true)
                 } else {
@@ -60,6 +64,11 @@ function QuestionList() {
                 }
             })
     }
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+        fetchQuestionList(newPage);
+      };
 
     return (
         <div className='row'>
@@ -77,6 +86,23 @@ function QuestionList() {
                         <QuestionDetails question={question} key={question.id} />
                     ) : ''}
                 {isShowAlert && <EmptyQuestionAlert tagname={questionsTags[selectedTag].label} />}
+                <nav>
+        <ul className="pagination">
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+              Previous
+            </button>
+          </li>
+          <li className="page-item">
+            <span className="page-link">{currentPage}</span>
+          </li>
+          <li className="page-item">
+            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
                 
             </div>
     <NewQuestion />
