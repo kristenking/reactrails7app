@@ -49,7 +49,7 @@ function QuestionDetails(props) {
 
 
   return (
-    <div className='card rounded-10 mt-3' >
+    <div className='card rounded-10 mt-3 mb-3' >
       <div className='card-body'>
         <h3 className='card-title'>{props.question.title}</h3>
         <p className="lead">
