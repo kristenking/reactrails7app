@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Logout from './Logout';
+import ServerSideError from '../ServerSideError';
+
 
 const AuthModule = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -10,6 +12,10 @@ const AuthModule = () => {
     password: '',
     passwordConfirmation: '',
   });
+
+  const [isServerSideError, setIsServerSideError] = useState(false)
+  const [errorMessages, setErrorMessages] = useState([]);
+
 
   const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 
@@ -38,7 +44,8 @@ const AuthModule = () => {
           // Redirect the user to the home page
           window.location.href = "/";
         } else {
-          // Handle errors (e.g., display an error message)
+          const errorData = await response.json();
+          setErrorMessages(errorData.error || ["An unknown error occurred"]);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -58,7 +65,9 @@ const AuthModule = () => {
         if (response.ok) {
           setIsLoggedIn(true); // Set authentication status to true
         } else {
-          // Handle errors (e.g., display an error message)
+          const errorData = await response.json();
+          console.log("errorData:", errorData);
+          setErrorMessages(errorData.error || ["An unknown error occurred"]);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -78,11 +87,12 @@ const AuthModule = () => {
   return (
     <>
       {!isLoggedIn ? (
-        <div className="container">
-          <div className="row justify-content-center">
+        <div className="container ">
+          <div className="row justify-content-center mb-10">
             <div className="col-md-6">
               <div className="card mt-5">
                 <div className="card-body">
+                {isServerSideError && <ServerSideError errors={errorMessages} />}
                   <h1 className="card-title text-center">{isSignUp ? 'Sign Up' : 'Login'}</h1>
                   <form onSubmit={handleSubmit}>
                     {isSignUp && (
@@ -112,52 +122,52 @@ const AuthModule = () => {
                     <div className="form-group">
                       <label className="form-label mt-3 mb-3">Password</label>
                       <input
-                    type="password"
-                    className="form-control form-control-lg rounded-3"
-                    value={formFields.password}
-                    onChange={handleFormFields}
-                    name="password"
-                    required
-                  />
-                </div>
-                {isSignUp && (
-                  <div className="form-group">
-                    <label className="form-label mt-3 mb-3">Confirm Password</label>
-                    <input
-                      type="password"
-                      className="form-control form-control-lg rounded-3"
-                      value={formFields.passwordConfirmation}
-                      onChange={handleFormFields}
-                      name="passwordConfirmation"
-                      required
-                    />
+                        type="password"
+                        className="form-control form-control-lg rounded-3"
+                        value={formFields.password}
+                        onChange={handleFormFields}
+                        name="password"
+                        required
+                      />
+                    </div>
+                    {isSignUp && (
+                      <div className="form-group">
+                        <label className="form-label mt-3 mb-3">Confirm Password</label>
+                        <input
+                          type="password"
+                          className="form-control form-control-lg rounded-3"
+                          value={formFields.passwordConfirmation}
+                          onChange={handleFormFields}
+                          name="passwordConfirmation"
+                          required
+                        />
+                      </div>
+                    )}
+                    <button type="submit" className="btn btn-primary w-100 mt-3">
+                      {isSignUp ? 'Sign Up' : 'Login'}
+                    </button>
+                  </form>
+                  <div className="text-center mt-3">
+                    <small>
+                      {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+                      <button type="button" className="btn btn-link" onClick={switchForm}>
+                        {isSignUp ? 'Login' : 'Sign Up'}
+                      </button>
+                    </small>
                   </div>
-                )}
-                <button type="submit" className="btn btn-primary w-100 mt-3">
-                  {isSignUp ? 'Sign Up' : 'Login'}
-                </button>
-              </form>
-              <div className="text-center mt-3">
-                <small>
-                  {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-                  <button type="button" className="btn btn-link" onClick={switchForm}>
-                    {isSignUp ? 'Login' : 'Sign Up'}
-                  </button>
-                </small>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  ) : (
-    <>
-      <p>You are logged in!</p>
-      <Logout setIsLoggedIn={setIsLoggedIn} />
+      ) : (
+        <>
+          <p>You are logged in!</p>
+          <Logout setIsLoggedIn={setIsLoggedIn} />
+        </>
+      )}
     </>
-  )}
-</>
-);
+  );
 };
 
 export default AuthModule;

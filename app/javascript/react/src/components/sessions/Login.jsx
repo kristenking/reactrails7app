@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import ServerSideError from "../ServerSideError";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errorMessages, setErrorMessages] = useState([]);
+
 
   const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -20,9 +24,10 @@ const Login = () => {
       });
 
       if (response.ok) {
-        setIsLoggedIn(true); // Set authentication status to true
+        setIsLoggedIn(true);
       } else {
-        // Handle errors (e.g., display an error message)
+        const errorData = await response.json();
+        setErrorMessages(errorData.data || ["An unknown error occurred"]);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -33,24 +38,29 @@ const Login = () => {
   return (
     <>
       {!isLoggedIn ? (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </form>
-      ) : (
-        <p>You are logged in!</p>
-      )}
+  <>
+    {errorMessages.length > 0 && (
+      <ServerSideError errors={errorMessages} />
+    )}
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button type="submit">Login</button>
+    </form>
+  </>
+) : (
+  <p>You are logged in!</p>
+)}
     </>
   );
 };
