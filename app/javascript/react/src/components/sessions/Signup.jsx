@@ -21,10 +21,10 @@ const Signup = () => {
   
       if (response.ok) {
         alert("Sign up successful!");
-        // Redirect the user to the home page
+    
         window.location.href = "/";
       } else {
-        // Handle errors (e.g., display an error message)
+   
       }
     } catch (error) {
       console.error("Error:", error);

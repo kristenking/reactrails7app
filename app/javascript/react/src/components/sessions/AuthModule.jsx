@@ -22,7 +22,6 @@ const AuthModule = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (isSignUp) {
-      // Sign-up logic
       try {
         const response = await fetch("/api/v1/users", {
           method: "POST",
@@ -41,17 +40,16 @@ const AuthModule = () => {
 
         if (response.ok) {
           alert("Sign up successful!");
-          // Redirect the user to the home page
           window.location.href = "/";
         } else {
           const errorData = await response.json();
+         debugger;
           setErrorMessages(errorData.error || ["An unknown error occurred"]);
         }
       } catch (error) {
         console.error("Error:", error);
       }
     } else {
-      // Login logic
       try {
         const response = await fetch("/api/v1/users/sign_in", {
           method: "POST",
@@ -63,7 +61,7 @@ const AuthModule = () => {
         });
 
         if (response.ok) {
-          setIsLoggedIn(true); // Set authentication status to true
+          setIsLoggedIn(true); 
         } else {
           const errorData = await response.json();
           console.log("errorData:", errorData);
@@ -83,7 +81,6 @@ const AuthModule = () => {
     setIsSignUp(!isSignUp);
   };
 
-  // Conditionally render different components based on authentication status
   return (
     <>
       {!isLoggedIn ? (
@@ -111,7 +108,7 @@ const AuthModule = () => {
                     <div className="form-group">
                       <label className="form-label mt-3 mb-3">Email</label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control form-control-lg rounded-3"
                         value={formFields.email}
                         onChange={handleFormFields}

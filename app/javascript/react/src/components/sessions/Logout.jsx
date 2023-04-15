@@ -18,7 +18,7 @@ const Logout = () => {
       if (response.ok) {
         setMessage("You have been successfully logged out");
       } else {
-        // Handle errors (e.g., display an error message)
+       
       }
     } catch (error) {
       console.error("Error:", error);
